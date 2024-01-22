@@ -1,0 +1,16 @@
+torch=2.1.2
+torchvision
+diffusers[torch]==0.11.1
+transformers>=4.25.1
+bitsandbytes==0.35.4
+decord==0.6.0
+accelerate
+tensorboard
+modelcards
+omegaconf
+einops
+imageio
+ftfy
+xformers
+pillow==9.5.0
+moviepy
