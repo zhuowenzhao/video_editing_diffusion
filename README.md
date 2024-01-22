@@ -1,6 +1,6 @@
 # Video editing with foundational stabel diffusion model
 
-Stable diffusion model can generate images based on given input prompts, making a pretrianed diffusion model viable tool to eidit images with conditions.
+Stable diffusion model can generate images based on given input prompts, making a pretrianed diffusion model viable tool to edit images with conditions.
 This pipeline is adapted from the work of Tune-A-Video ([github](https://github.com/zhuowenzhao/Tune-A-Video), [paper](https://arxiv.org/abs/2212.11565)) that is based on open-source [ Huggigface Diffusers](https://huggingface.co/docs/diffusers/index) and its [pretrained checkpoints](https://huggingface.co/CompVis/stable-diffusion-v1-4).
 
 ## Results
@@ -26,43 +26,43 @@ This pipeline is adapted from the work of Tune-A-Video ([github](https://github.
 
 ## The pipeline
 ### Set-ups
-In my tests, it works with conda enviroment and `Python==3.11`.
+In my tests, it worked with conda enviroment and `Python==3.11`.
 
 ```
 pip install -r requirements.txt
 ```
 
 ### Training:   
-The input video will be decomposed to frame images.
-The prompt and the images (in batch) will be embedded into latent vectors. During training, the model will semantically match hese latent vectors going through cross-attention Unet architecture. 
+The input video will be decomposed into frame images.
+The prompt and the images (in batches) will be embedded into latent vectors. The model is trained to semantically match these latent vectors going through cross-attention Unet architecture. 
 
 1. Download stable diffusion mdoel and the pretrined weights.  
 	  ```
 	  ./download_models.sh
 	  ```
   
-2. Stongly suggest lanching in terminal. First, configurate `Accelerate` for non/distributed training.
+2. Stongly suggest lanching accelerate jobs in terminal. First, configurate `Accelerate` for non/distributed training.
 
 	```
 	accelerate config
 	```
-2. Launch the training job
+2. Launch a training job.
 
 	```
 	accelerate launch train_tuneavideo.py --config='./configs/woman-talking.yaml'
 	```
 
 Some notes:
-I have tried different aspect ratios and resolutions, I think the best is 512x512, which is the default image sizes of the pretrained model.
-During the training, GPU memory is a bottelneck (even with A100 40GBs) since the model itself is quite huge. Due to resources limitation, I was only able to train videos with a total frames up to 16. 
+I have tried different image aspect ratios and resolutions, I think the best is (512, 512), which is the default image sizes of the pretrained model.
+GPU memory is a bottelneck for the training (with A100 40GBs) since the model itself is quite huge. Due to resources limitation, I was only able to train videos with a total frames up to 16. 
 
 ### Inferencing:  
-Once the training is done (modify `inference.py` if needed)
+Once the training is done (modify `inference.py` if needed), do:
 
 ```
 python inference.py
 ```
-In this process:
+In this process,
 
 1. New prompts will be embeded. The new latent vectors are initialized through DDIM inversion, providing structure guidance for sampling.
 2. The new latent vectors will be used to reconstruct frames (the same dimension as input videos) through a VAE decoder.
@@ -73,6 +73,6 @@ It contains a few functionalites using module `moviepy`:
 1. An audio is extracted from the original video.
 2. A new video is made by combining the audio and new video of the same duration.
 
-See `postprocess.ipynb`
+See `postprocess.ipynb`.
 
 
