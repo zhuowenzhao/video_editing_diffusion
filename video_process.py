@@ -7,16 +7,17 @@ class VideoProcess:
         self.new_vid = VideoFileClip(generated_path) if generated_path is not None else generated_path
         self.audio = self.orig_vid.audio if self.orig_vid is not None else None
 
+        if self.new_vid is not None:
+            self.new_vid.write_gif(generated_path, loop=0)
+    
     def gifs2mp4(self):
         assert self.new_vid_path is not None, 'Output path is None. Please provide a valid gif file path.'
         self.new_gifs.write_videofile(f"{self.new_mp4}.mp4", codec='mpeg4')
-
 
     def video(self, out_name: str = 'edited_video.mp4'):
         audio = self.audio.subclip(0, self.new_vid.duration)
         combined_vid = self.new_vid.set_audio(audio)
         combined_vid.write_videofile(out_name, codec='libx264', audio_codec='aac')
-
 
     def mp42gifs(self, 
                  start: int = 0, 
