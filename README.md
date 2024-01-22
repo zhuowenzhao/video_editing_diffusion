@@ -1,8 +1,7 @@
-#Video editing with foundational stabel diffusion model
+# Video editing with foundational stabel diffusion model
 
 Stable diffusion model can generate images based on given input prompts, making a pretrianed diffusion model viable tool to eidit images with conditions.
-
-This pipeline is adapted from the work of Tune-A-Video ([github](https://github.com/zhuowenzhao/Tune-A-Video), [paper](https://arxiv.org/abs/2212.11565))that is based on open-source [ Huggigface Diffusers](https://huggingface.co/docs/diffusers/index) and its [pretrained checkpoints](https://huggingface.co/CompVis/stable-diffusion-v1-4).
+This pipeline is adapted from the work of Tune-A-Video ([github](https://github.com/zhuowenzhao/Tune-A-Video), [paper](https://arxiv.org/abs/2212.11565)) that is based on open-source [ Huggigface Diffusers](https://huggingface.co/docs/diffusers/index) and its [pretrained checkpoints](https://huggingface.co/CompVis/stable-diffusion-v1-4).
 
 ## Results
 <table class="center">
@@ -25,9 +24,9 @@ This pipeline is adapted from the work of Tune-A-Video ([github](https://github.
 </table>
 
 
-##The pipeline
+## The pipeline
 ### Set-ups
-In my tests, it works with conda enviroment and Python==3.11
+In my tests, it works with conda enviroment and `Python==3.11`.
 
 ```
 pip install -r requirements.txt
@@ -38,9 +37,9 @@ The input video will be decomposed to frame images.
 The prompt and the images (in batch) will be embedded into latent vectors. During training, the model will semantically match hese latent vectors going through cross-attention Unet architecture. 
 
 1. Download stable diffusion mdoel and the pretrined weights.  
-  ```
-  ./download_models.sh
-  ```
+	  ```
+	  ./download_models.sh
+	  ```
   
 2. Stongly suggest lanching in terminal. First, configurate `Accelerate` for non/distributed training.
 
@@ -53,11 +52,11 @@ The prompt and the images (in batch) will be embedded into latent vectors. Durin
 	accelerate launch train_tuneavideo.py --config='./configs/woman-talking.yaml'
 	```
 
-Notes
+Some notes:
 I have tried different aspect ratios and resolutions, I think the best is 512x512, which is the default image sizes of the pretrained model.
-During the training, GPU memory is a bottelneck (even with A100 40GBs) since the model itself is quite huge. I was only able to train videos with a total frames up to 16. 
+During the training, GPU memory is a bottelneck (even with A100 40GBs) since the model itself is quite huge. Due to resources limitation, I was only able to train videos with a total frames up to 16. 
 
-###Inferencing:  
+### Inferencing:  
 Once the training is done (modify `inference.py` if needed)
 
 ```
@@ -68,7 +67,7 @@ In this process:
 1. New prompts will be embeded. The new latent vectors are initialized through DDIM inversion, providing structure guidance for sampling.
 2. The new latent vectors will be used to reconstruct frames (the same dimension as input videos) through a VAE decoder.
 
-###Postporcessing:  
+### Postporcessing:  
 It contains a few functionalites using module `moviepy`:
 
 1. An audio is extracted from the original video.
