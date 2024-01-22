@@ -1,4 +1,4 @@
-torch=2.1.2
+torch==2.1.2
 torchvision
 diffusers[torch]==0.11.1
 transformers>=4.25.1
