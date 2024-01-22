@@ -30,6 +30,8 @@ from tuneavideo.util import save_videos_grid, ddim_inversion
 from einops import rearrange
 
 
+# This code is from https://github.com/showlab/Tune-A-Video/blob/main/train_tuneavideo.py
+
 # Will error if the minimal version of diffusers is not installed. Remove at your own risks.
 check_min_version("0.10.0.dev0")
 

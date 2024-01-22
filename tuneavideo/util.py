@@ -9,6 +9,7 @@ import torchvision
 from tqdm import tqdm
 from einops import rearrange
 
+# This code is from https://github.com/showlab/Tune-A-Video/blob/main/tuneavideo/util.py
 
 def save_videos_grid(videos: torch.Tensor, path: str, rescale=False, n_rows=4, fps=8):
     videos = rearrange(videos, "b c t h w -> t b c h w")
