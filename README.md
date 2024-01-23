@@ -26,11 +26,30 @@ This pipeline is adapted from the work of Tune-A-Video ([github](https://github.
 
 ## The pipeline
 ### Set-ups
-In my tests, it worked with conda enviroment and `Python==3.11`.
+**Conda**
+
+In a conda env, I installed `conda install Python==3.11` and the following:
 
 ```
 pip install -r requirements.txt
 ```
+
+**Docker Container**
+
+I can also build a docker container to use GPUs for training and inferencing (postprocessing not included).
+Build Docker image (inside the current folder):
+
+```
+docker build -t image_name -f ./docker/Dockerfile .
+```
+Launch a Docker image using the following command (if needed, `--network your_docker_network_name` to specify a network). You will have a running shell and access to NVIDIA GPUs. Then follow the instructions in the next sections. 
+
+```
+docker run --gpus all -it image_name
+```
+
+
+
 
 ### Training:   
 The input video will be decomposed into frame images.
@@ -68,11 +87,12 @@ In this process,
 2. The new latent vectors will be used to reconstruct frames (the same dimension as input videos) through a VAE decoder.
 
 ### Postporcessing:  
-It contains a few functionalites using module `moviepy`:
+It contains a few functionalites using module `moviepy`. See `postprocess.ipynb`.
 
 1. An audio is extracted from the original video.
 2. A new video is made by combining the audio and new video of the same duration.
 
-See `postprocess.ipynb`.
+
+
 
 
