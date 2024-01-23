@@ -1,7 +1,7 @@
 pretrained_model_path: "./checkpoints/CompVis/stable-diffusion-v1-4"
 output_dir: "outputs/supewoman-talking5"
 train_data:
-  video_path: "./data/demo_input.mp4"
+  video_path: "./data/videos/demo_input.mp4"
   prompt: "a woman is talking"
   n_sample_frames: 24
   width: 512
